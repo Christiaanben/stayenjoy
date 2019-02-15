@@ -259,7 +259,7 @@
         }
 
         .indexNavbar.scrolled .nav-link.active {
-            color: #ff5f5f !important;
+            color: #ff5f60 !important;
         }
 
         .indexNavbar.scrolled.awake {
