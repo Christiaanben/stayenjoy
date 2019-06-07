@@ -1,93 +1,5 @@
 <?php
-//index_backup.php
-
-$error = '';
-$subject = '';
-$message = '';
-
-function clean_text($string)
-{
-	$string = trim($string);
-	$string = stripslashes($string);
-	$string = htmlspecialchars($string);
-	return $string;
-}
-
-if(isset($_POST["book"]))
-{
-	if($error == '')
-	{
-		require 'class/class.phpmailer.php';
-		$mail = new PHPMailer;
-		$mail->IsSMTP();								//Sets Mailer to send message using SMTP
-		$mail->Host = 'cp16.domains.co.za';		//Sets the SMTP hosts of your Email hosting, this for Godaddy
-		$mail->Port = '465';								//Sets the default SMTP server port
-		$mail->SMTPAuth = true;							//Sets SMTP authentication. Utilizes the Username and Password variables
-		$mail->Username = 'info@stayenjoy.co.za';					//Sets SMTP username
-		$mail->Password = '10091996animax';					//Sets SMTP password
-		$mail->SMTPSecure = 'ssl';							//Sets connection prefix. Options are "", "ssl" or "tls"
-		$mail->From = 'info@stayenjoy.co.za';					//Sets the From email address for the message
-		$mail->FromName = 'Stayenjoy';				//Sets the From name of the message
-		$mail->AddAddress('joyvaneeden@gmail.com', 'Joy van Eeden');		//Adds a "To" address
-		$mail->AddCC($_POST["email"], $_POST["name"]);	//Adds a "Cc" address
-		$mail->WordWrap = 50;							//Sets word wrapping on the body of the message to a given number of characters
-		$mail->IsHTML(true);							//Sets message type to HTML				
-		$mail->Subject = 'Gordons Bay Accommodation Booking';				//Sets the Subject of the message
-		$mail->Body = 'Good day,<br><br>
-                       I would like to book your Gordons Bay holiday home for '.$_POST["amount"].' people.<br>
-                       From: '.$_POST["from"].'<br>
-                       To: '.$_POST["to"].'<br>
-                       Yours sincerely,<br>
-                       '.$_POST["name"].'<br>
-                       Cell:'.$_POST["phone"].'<br><br>';
-		if($mail->Send())								//Send an Email. Return true on success or false on error
-		{
-			$error = "<div onclick='bookingSuccess()'></div>";
-		}
-		else
-		{
-		    $error = '<div class="overlayMessageSent"><h1 style="color: white; padding-top: 275px; z-index: 100;">Oops! Something went wrong.</h1></div>';
-		}
-		$subject = '';
-		$message = '';
-	}
-}
-
-if(isset($_POST["contact"]))
-{
-   if($error == '')
-    {
-        require 'class/class.phpmailer.php';
-        $mail = new PHPMailer;
-        $mail->IsSMTP();								//Sets Mailer to send message using SMTP
-        $mail->Host = 'cp16.domains.co.za';		//Sets the SMTP hosts of your Email hosting, this for Godaddy
-        $mail->Port = '465';								//Sets the default SMTP server port
-        $mail->SMTPAuth = true;							//Sets SMTP authentication. Utilizes the Username and Password variables
-        $mail->Username = 'info@stayenjoy.co.za';					//Sets SMTP username
-        $mail->Password = '10091996animax';					//Sets SMTP password
-        $mail->SMTPSecure = 'ssl';							//Sets connection prefix. Options are "", "ssl" or "tls"
-        $mail->From = 'info@stayenjoy.co.za';					//Sets the From email address for the message
-        $mail->FromName = 'Stayenjoy';				//Sets the From name of the message
-        $mail->AddAddress('joyvaneeden@gmail.com', 'Joy van Eeden');		//Adds a "To" address
-        $mail->AddCC($_POST["email"], $_POST["name"]);	//Adds a "Cc" address
-        $mail->WordWrap = 50;							//Sets word wrapping on the body of the message to a given number of characters
-        $mail->IsHTML(true);							//Sets message type to HTML
-        $mail->Subject = 'Gordons Bay Accommodation Enquiry';				//Sets the Subject of the message
-        $mail->Body = $_POST["message"];				//An HTML or plain text message body
-        if($mail->Send())								//Send an Email. Return true on success or false on error
-        {
-            $error = "<div onclick='contactSuccess()'></div>";
-        }
-        else
-        {
-            $error = '<div class="overlayMessageSent"><h1 style="color: white; padding-top: 275px; z-index: 100;">Oops! Something went wrong.</h1></div>';
-        }
-        $name = '';
-        $email = '';
-        $subject = '';
-        $message = '';
-    }
-}
+//index.php
 ?>
 
 <!DOCTYPE html>
@@ -126,576 +38,273 @@ if(isset($_POST["contact"]))
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 </head>
 
-<body style="overflow-x: hidden;">
-
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" style="position: fixed;  overflow:auto;">
-        <div class="container">
-          <a href="index_backup.php">
-            <i class="fas fa-arrow-left navbar-brand backbtn"></i>
-          </a>
-            <a class="navbar-brand" href="index_backup.php">Accommodation</a>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark indexNavbar" id="ftco-navbar" style="position: fixed; overflow:auto;">
+        <div class="container float-left d-flex justify-content-start">
+            <a href="index.php">
+                <i class="fas fa-arrow-left navbar-brand backbtn"></i>
+            </a>
+            <a class="navbar-brand" style="color: #000; font-size: 24px;" href="index.php">Welcome to StayEnJoy!</a>
+            <a class="navbar-brand" style="color: #000; font-size: 18px; margin-left: 70px" href="index.php">Please choose where you would like to stay:</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="oi oi-menu"></span> Menu
             </button>
-
-            <div class="collapse navbar-collapse" id="ftco-nav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="#home" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#book" class="nav-link">Booking</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#about" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#pictures" class="nav-link">Pictures</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#contact" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
-
     <!--HOME-->
-    <section class="home-slider owl-carousel" id="home" style="overflow-x: scroll; z-index: -1;">
-        <div class="slider-item" style="background-image: url('images/9.jpg');">
-            <div class="overlay"></div>
-            <div class="container">
-                <div class="row slider-text align-items-center">
-                    <div class="col-md-7 col-sm-12 ftco-animate">
-                        <h1 class="mb-3">Gordons Bay</h1>
-                        <h2 class="mb-3" style="color: white">Holiday home</h2>
-                        <?php echo $error; ?>
-                    </div>
+    <div class="" style="margin: 0px; width: 104%;">
+        <div class="row" style="height: 600px;">
+            <div class="col-lg-6 col-md-6 col-sm-6" style="background-image: url('images/9.jpg');">
+                <div class="overlayIndex indexOpac"></div>
+                <div class="ftco-animate grow" style="margin-top: 200px; font-size: 20px">
+                    <h1 class="mb-3 " style="color: white">Gordons Bay</h1>
+                    <h2 class="mb-3 " style="color: white">Holiday home</h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6" style="background-image: url('images/9.jpg');">
+                <div class="overlayIndex indexOpac"></div>
+                <div class="ftco-animate" style="margin-top: 200px;">
+                    <h1 class="mb-3 grow" style="color: white">Bellville</h1>
+                    <h2 class="mb-3 grow" style="color: white">Guest House</h2>
                 </div>
             </div>
         </div>
-    </section>
-    <div class="ftco-section-search" id="book">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 tabulation-search">
-                    <div class="element-animate">
-                        <div class="nav nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link p-3" id="v-pills-profile-tab" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
-                                <span></span> Book your stay</a>
-                        </div>
-                    </div>
-                    <div class="tab-content py-5" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                            <form method="post" class="d-block d-lg-flex">
-                                <div class="container" style="cursor: pointer; padding-left: 60px; padding-right: 60px;">
-                                    <p id="result"></p>
-                                    <div id="myMessageSent" class="overlayMessageSent">
-                                        <h1 style="color: white; padding-top: 275px; z-index: 100;">Message sent! Thank you.</h1>
-                                    </div>
-                                    <div class="row">
-                                        <div class="select-wrap col-12 d-flex justify-content-start" style="color: white; margin-top: -28px; text-align: center; margin-bottom: 15px;">
-                                            How many visitors?
-                                            <br>
-                                            <input type="number" name="amount" id="guests" min="1" max="10" autocomplete="off" style="margin-left: 20px; height: 40px"
-                                                required pattern="^(1[0]|[1-9])$" oninvalid="setCustomValidity('Number of people required. 1 - 10 people.')"
-                                                oninput="setCustomValidity('')">
-                                        </div>
-                                        <div class="check-in col-lg-6 col-md-6 col-sm-12 d-flex justify-content-start" style="margin-bottom: 34px;">
-                                            <input type="text" id="checkin_date" autocomplete="off" name="from" class="form-control mediaFormInput " placeholder="Check-in date"
-                                                style="width: auto;" required>
-                                        </div>
-                                        <div class="check-out col-lg-6 col-md-6 col-sm-12 d-flex justify-content-start" style="margin-bottom: 34px;">
-                                            <input type="text" id="checkout_date" autocomplete="off" name="to" class="form-control mediaFormInput" placeholder="Check-out date"
-                                                style="width: auto;" required>
-                                        </div>
-                                        <br>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-start" style="margin-bottom: 34px;">
-                                            <input type="text" id="name" name="name" autocomplete="off" class="form-control mediaFormInput" placeholder="Name" style="width: auto; "
-                                                required pattern="[A-Za-z]{1,30}" oninvalid="setCustomValidity('Name required. Spaces and Letters allowed.')"
-                                                oninput="setCustomValidity('')">
-                                        </div>
-                                        <br>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-start" style="margin-bottom: 34px;">
-                                            <input type="email" id="email" name="email" autocomplete="off" class="form-control mediaFormInput" placeholder="Email" style="width: auto;"
-                                                required oninvalid="setCustomValidity('Email required. Please enter valid email.')"
-                                                oninput="setCustomValidity('')">
-                                        </div>
-                                        <br>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-start" style="margin-bottom: 34px;">
-                                            <input type="tel" id="phone" name="phone" autocomplete="off" class="form-control" placeholder="Phone" style="width: auto;"
-                                                pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required oninvalid="setCustomValidity('Phone number required. Please enter valid phone number.')"
-                                                oninput="setCustomValidity('')">
-                                        </div>
-                                        <br>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-start" style="margin-bottom: 34px;">
-                                            <input class="mediaFormButton" name="book" type="submit" value="Submit" onclick="bookingSuccess()" style="width: auto;">
-                                        </div>
-                                    </div>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    </div>
+    <footer class="ftco-footer ftco-bg-dark ftco-section" style="width: 104%; padding-top: 25px; overflow: hidden; padding-bottom: 10px;">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script> All rights reserved
+                </p>
             </div>
         </div>
-        <!--ABOUT-->
-        <section class="ftco-section bg-light" style="padding-bottom: 10px;" id="about">
-            <div class="container">
-                <div class="row justify-content-center mb-5 pb-5">
-                    <div class="col-md-7 text-center heading-section ftco-animate">
-                        <h2>About</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 col-lg-12 d-flex align-self-stretch ftco-animate">
-                        <div class="media block-6 services d-block text-center">
-                            <div class="d-flex justify-content-center">
-                                <div class="icon d-flex justify-content-center mb-3">
-                                    <i class="fas fa-home" style="font-size: 70px; margin: auto"></i>
-                                </div>
-                            </div>
-                            <div class="media-body p-2">
-                                <h3 class="heading">171 Bikini Beach</h3>
-                                <p>Well located on Bikini Beach in Gordons Bay, 171 Bikini Beach offers spacious seaside living,
-                                    with sea and harbour views.</p>
-                                <p>The house can accommodate up to 10 guests in 4 bedrooms. (From 15 December - 5 bedrooms are
-                                    available with max 12 guests) Three bedrooms are located inside the house. All three
-                                    bedrooms have views on Bikini Beach and the old harbour. Bedding and towels are provided.</p>
-                                <p>The first has a double and single bed with en suite bathroom with a toilet, shower and basin.</p>
-                                <p>The second bedroom has a double bed.</p>
-                                <p>The third bedroom has 2 single beds and an en suite bathroom with a toilet, shower and basin
-                                    inside the room.</p>
-                                <p>Outside there is a room with two single beds and a seperate bathroom with a shower, toilet
-                                    and basin</p>
-                                <p>Inside there is a seperate toilet and family bathroom with a shower, bath and washing machine.</p>
-                                <p>The lounge features a flat-screen TV, DStv explora, a Hi-Fi and a DVD player. It has one
-                                    single sleeper couch. Next to the Lounge is a big undercover porch which overlooks the
-                                    beach. In the kitchen there is a dishwasher, microwave and a four plate stove with oven.</p>
-                                <p>At the back guests will enjoy the private garden and braai area. A double garage and additional
-                                    parking in front of the garage is available.
-                                </p>
-                                <p>No smoking or animals.</p>
-                                <p>Furnished Property </p>
-                                <p>Reference #: 2321283</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </section>
-        <!--PICTURES-->
-        <section class="ftco-section bg-light" id="pictures" style="margin-top: -80px;">
-            <div class="container-fluid">
-                <div class="row no-gutters justify-content-center pb-5 ftco-animate">
-                    <div class="col-md-7 text-center heading-section">
-                        <h2>Pictures</h2>
-                    </div>
-                </div>
-                <div class="row no-gutters">
-                    <div class="col-md-12 text-center heading-section" id="master">
-                        <h4 style="margin-bottom: 30px;">Master Bedroom</h4>
-                    </div>
-                    <?php  
-        for ($ms = 1; $ms <= 3; $ms++) {
-        echo "<div class='col-md-4 col-lg-4 ftco-animate'>
-        <a href='#ms$ms' class='block-5 img$ms ms$ms'></a>
-        </div><div class='img$ms-target' id='ms$ms'>
-        <img src='images/MS$ms.jpg'/>
-        <a class='img$ms-close' href='#master'></a>
-        </div>";
+    </footer>
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
+        </svg>
+    </div>
+    <style>
+      .overlayIndex {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: '';
+        background: #000;
+         }
+
+        .indexOpac{
+          opacity: .45;
         }
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="middle">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Middle Bedroom</h4>
-                    </div>
-                    <?php  
-        $mb = 1;
-        echo "<div class='col-md-12 col-lg-12 ftco-animate'>
-        <a href='#mb$mb' class='block-5 img$mb mb$mb'></a>
-        </div><div class='img$mb-target' id='mb$mb'>
-        <img src='images/MB$mb.jpg'/>
-        <a class='img$mb-close' href='#middle'></a>
-        </div>";
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="guest">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Guest Bedroom</h4>
-                    </div>
-                    <?php  
-        for ($gb = 1; $gb <= 3; $gb++) {
-        echo "<div class='col-md-4 col-lg-4 ftco-animate'>
-        <a href='#gb$gb' class='block-5 img$gb gb$gb'></a>
-        </div><div class='img$gb-target' id='gb$gb'>
-        <img src='images/GB$gb.jpg'/>
-        <a class='img$gb-close' href='#guest'></a>
-        </div>";
+
+        .indexOpac:hover{
+          opacity: 0;
         }
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="outside">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Outside Bedroom</h4>
-                    </div>
-                    <?php  
-        for ($ob = 1; $ob <= 4; $ob++) {
-        echo "<div class='col-md-3 col-lg-3 ftco-animate'>
-        <a href='#ob$ob' class='block-5 img$ob ob$ob'></a>
-        </div><div class='img$ob-target' id='ob$ob'>
-        <img src='images/OB$ob.jpg'/>
-        <a class='img$ob-close' href='#outside'></a>
-        </div>";
+        .grow { transition: all .2s ease-in-out; }
+        .grow:hover { transform: scale(1.1); }
+
+        .indexNavbar {
+            background: #fff !important;
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 3;
+            top: 0px;
         }
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="lounge">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Lounge</h4>
-                    </div>
-                    <?php  
-        for ($lr = 1; $lr <= 4; $lr++) {
-        echo "<div class='col-md-3 col-lg-3 ftco-animate'>
-        <a href='#lr$lr' class='block-5 img$lr lr$lr'></a>
-        </div><div class='img$lr-target' id='lr$lr'>
-        <img src='images/LR$lr.jpg'/>
-        <a class='img$lr-close' href='#lounge'></a>
-        </div>";
-        }
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="dining">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Dining Area</h4>
-                    </div>
-                    <?php  
-        for ($dr = 1; $dr <= 3; $dr++) {
-        echo "<div class='col-md-4 col-lg-4 ftco-animate'>
-        <a href='#dr$dr' class='block-5 img$dr dr$dr'></a>
-        </div><div class='img$dr-target' id='dr$dr'>
-        <img src='images/DR$dr.jpg'/>
-        <a class='img$dr-close' href='#dining'></a>
-        </div>";
-        }
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="stoep">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Porch</h4>
-                    </div>
-                    <?php  
-        for ($s = 1; $s <= 3; $s++) {
-        echo "<div class='col-md-4 col-lg-4 ftco-animate'>
-        <a href='#s$s' class='block-5 img$s s$s'></a>
-        </div><div class='img$s-target' id='s$s'>
-        <img src='images/S$s.jpg'/>
-        <a class='img$s-close' href='#stoep'></a>
-        </div>";
-        }
-      ?>
-                    <div class="col-md-12 text-center heading-section" id="braai">
-                        <h4 style="margin-bottom: 30px; margin-top:30px">Braai Area</h4>
-                    </div>
-                    <?php  
-        for ($b = 1; $b <= 3; $b++) {
-        echo "<div class='col-md-4 col-lg-4 ftco-animate'>
-        <a href='#b$b' class='block-5 img$b b$b'></a>
-        </div><div class='img$b-target' id='b$b'>
-        <img src='images/B$b.jpg'/>
-        <a class='img$b-close' href='#braai'></a>
-        </div>";
-        }
-      ?>
-                </div>
-            </div>
-        </section>
-        <!--CONTACT-->
-        <section class="ftco-section bg-light" style="padding-bottom: 10px; margin-top: -85px; padding-bottom: 30px" id="contact">
-            <div class="container">
-                <div class="row justify-content-center pb-5">
-                    <div class="col-md-7 text-center heading-section ftco-animate">
-                        <h2>Contact</h2>
-                    </div>
-                </div>
-                <form method="post">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <input type="text" id="cName" name="name" class="form-control mediaFormInput" autocomplete="off" placeholder="Name" style="margin-bottom: 20px; width: 335px;"
-                                required pattern="[A-Za-z]{1,30}" oninvalid="setCustomValidity('Name required. Spaces and Letters allowed.')"
-                                oninput="setCustomValidity('')">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <input type="text" id="cEmail" name="email" class="form-control mediaFormInput" autocomplete="off" placeholder="Email" style="margin-bottom: 20px; width: 335px;"
-                                required oninvalid="setCustomValidity('Email required. Please enter valid email.')" oninput="setCustomValidity('')">
-                            <textarea type="text" id="cMessage" name="message" class="form-control textareaInput" autocomplete="off" rows="8" placeholder="Message"
-                                style="margin-bottom: 20px;" required></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <input class="mediaFormButton" type="submit" name="contact" value="Send" onclick="contactSuccess()">
-                        </div>
-                    </div>
-                </form>
-        </section>
 
-        <footer class="ftco-footer ftco-bg-dark ftco-section">
-            <div class="container">
-                <div class="row mb-5">
-                    <div class="col-md">
-                        <div class="ftco-footer-widget mb-4">
-                            <h2 class="ftco-heading-2">Book Now</h2>
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="#book" class="py-2 d-block">Click here!</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="ftco-footer-widget mb-4">
-                            <h2 class="ftco-heading-2">Details</h2>
-                            <ul class="list-unstyled">
-                                <li>
-                                    Bedrooms: 4
-                                </li>
-                                <li>
-                                    Guests: 10
-                                </li>
-                                <li>
-                                    Areas: Kitchen, Lounge, Stoop, Garden
-                                </li>
-                                <li>
-                                    Extras: Washing machine, Dishwasher, Microwave, Stove with oven, Braai, Double Garage
-                                </li>
-                                <li>
-                                    PLEASE NOTE: No smoking or animals
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md">
-                        <div class="ftco-footer-widget mb-4">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;
-                            <script>document.write(new Date().getFullYear());</script> All rights reserved
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- loader -->
-        <div id="ftco-loader" class="show fullscreen">
-            <svg class="circular" width="48px" height="48px">
-                <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-                <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
-            </svg>
-        </div>
-        <style>
-            .textareaInput {
-                width: 460px;
-            }
-            .backbtn{
-              font-size: 28px; 
-            }
-
-            @media only screen and (max-width: 360px) {
-                .textareaInput {
-                    width: 334px;
-                }
-                .backbtn{
-                    font-size: 28px; 
-                }
-            }
-
-            @media only screen and (max-width: 328px){
-              .backbtn{
-                    font-size: 28px;
-                    margin-right: 4px;
-                    margin-left: -5px; 
-                }
-            }
-            @media only screen and (min-width: 992px){
-              .backbtn{
-                    font-size: 28px;
-                    margin-right: 70px;
-                    margin-left: -5px; 
-                }
-            }
-            @media only screen and (min-width: 1085px){
-              .backbtn{
-                    font-size: 28px;
-                    margin-right: 80px;
-                    margin-left: -26px; 
-                }
-            }
-
-            @media screen and (max-width: 735px) {
-                .block-5 {
-                    overflow: hidden;
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                    height: 120px;
-                    position: relative;
-                    display: block;
-                }
-            }
-
-            .ms1 {
-                background-image: url('images/MS1.jpg');
-            }
-
-            .ms2 {
-                background-image: url('images/MS2.jpg');
-            }
-
-            .ms3 {
-                background-image: url('images/MS3.jpg');
-            }
-
-            .mb1 {
-                background-image: url('images/MB1.jpg');
-            }
-
-            .gb1 {
-                background-image: url('images/GB1.jpg');
-            }
-
-            .gb2 {
-                background-image: url('images/GB2.jpg');
-            }
-
-            .gb3 {
-                background-image: url('images/GB3.jpg');
-            }
-
-            .ob1 {
-                background-image: url('images/OB1.jpg');
-            }
-
-            .ob2 {
-                background-image: url('images/OB2.jpg');
-            }
-
-            .ob3 {
-                background-image: url('images/OB3.jpg');
-            }
-
-            .ob4 {
-                background-image: url('images/OB4.jpg');
-            }
-
-            .lr1 {
-                background-image: url('images/LR1.jpg');
-            }
-
-            .lr2 {
-                background-image: url('images/LR2.jpg');
-            }
-
-            .lr3 {
-                background-image: url('images/LR3.jpg');
-            }
-
-            .lr4 {
-                background-image: url('images/LR4.jpg');
-            }
-
-            .s1 {
-                background-image: url('images/S1.jpg');
-            }
-
-            .s2 {
-                background-image: url('images/S2.jpg');
-            }
-
-            .s3 {
-                background-image: url('images/S3.jpg');
-            }
-
-            .b1 {
-                background-image: url('images/B1.jpg');
-            }
-
-            .b2 {
-                background-image: url('images/B2.jpg');
-            }
-
-            .b3 {
-                background-image: url('images/B3.jpg');
-            }
-
-            .dr1 {
-                background-image: url('images/DR1.jpg');
-            }
-
-            .dr2 {
-                background-image: url('images/DR2.jpg');
-            }
-
-            .dr3 {
-                background-image: url('images/DR3.jpg');
-            }
-
-            .overlayMessageSent {
-                opacity: 0.90;
-                background: #000;
-                width: 100%;
-                height: 100%;
-                z-index: 10;
+        @media (max-width: 991.98px) {
+            .indexNavbar {
+                background: white;
                 top: 0;
-                left: 0;
-                position: fixed;
-            }            
-        </style>
-        <script>
-            $(document).ready(function () {
-                $("#myMessageSent").hide();
-                $(".overlayMessageSent").hide();
-            });           
-        </script>
-        <script>
-            function bookingSuccess() {
-                var dateIn, dateOut, name, email, phone;
-                dateIn = $("#checkin_date").val();
-                dateOut = $("#checkout_date").val();
-                name = $("#name").val();
-                email = $("#email").val();
-                phone = $("#phone").val();
-                guests = $("#guests").val();
-                if ((dateIn !== '') && (dateOut !== '') && (name !== '') && (email !== '') && (phone !== '') && (guests !== '')) {
-                    $("#myMessageSent").show().delay(1000).fadeOut();
-                    setTimeout(function () { $("#myMessageSent").hide(); }, 3000);
-                    $(".overlayMessageSent").show();
-                }
+                position: relative;
             }
+        }
 
-            function contactSuccess() {
-                var cName, cEmail, cMessage;
-                cName = $("#cName").val();
-                cEmail = $("#cEmail").val();
-                cMessage = $("#cMessage").val();
-                if ((cName !== '') && (cEmail !== '') && (cMessage !== '')) {
-                    $("#myMessageSent").show();
-                    setTimeout(function () { $("#myMessageSent").hide(); }, 3000);
-                }
+        .indexNavbar .navbar-nav>.nav-item>.nav-link {
+            font-size: 16px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            padding-left: 20px;
+            padding-right: 20px;
+            color: #000;
+            opacity: 1 !important;
+        }
+
+        .indexNavbar .navbar-nav>.nav-item>.nav-link:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 991.98px) {
+            .indexNavbar .navbar-nav>.nav-item>.nav-link {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 0px;
+                padding-right: 0px;
             }
-        </script>
-        <script src="js/jquery.min.js"></script>
-        <script src="js/jquery-migrate-3.0.1.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.easing.1.3.js"></script>
-        <script src="js/jquery.waypoints.min.js"></script>
-        <script src="js/jquery.stellar.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
-        <script src="js/aos.js"></script>
-        <script src="js/jquery.animateNumber.min.js"></script>
-        <script src="js/bootstrap-datepicker.js"></script>
-        <script src="js/jquery.timepicker.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-        <script src="js/google-map.js"></script>
-        <script src="js/main.js"></script>
+        }
+
+        .indexNavbar .navbar-nav>.nav-item.ftco-seperator {
+            position: relative;
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
+        @media (max-width: 991.98px) {
+            .indexNavbar .navbar-nav>.nav-item.ftco-seperator {
+                padding-left: 0;
+                margin-left: 0;
+            }
+        }
+
+        .indexNavbar .navbar-nav>.nav-item.ftco-seperator:before {
+            position: absolute;
+            content: "";
+            top: 10px;
+            bottom: 10px;
+            left: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (max-width: 991.98px) {
+            .indexNavbar .navbar-nav>.nav-item.ftco-seperator:before {
+                display: none;
+            }
+        }
+
+        .indexNavbar .navbar-nav>.nav-item.cta>a {
+            padding-left: 0;
+            color: #fff;
+        }
+
+        .indexNavbar .navbar-nav>.nav-item.cta>a span {
+            border: 2px solid #fff;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+
+        .indexNavbar .navbar-nav>.nav-item.cta.cta-colored span {
+            border-color: #ff5f5f;
+        }
+
+        .indexNavbar .navbar-nav>.nav-item.active>a {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .indexNavbar .navbar-toggler {
+            border: none;
+            color: rgba(255, 255, 255, 0.5) !important;
+            cursor: pointer;
+            padding-right: 0;
+            text-transform: uppercase;
+            font-size: 16px;
+            letter-spacing: .1em;
+        }
+
+        .indexNavbar.scrolled {
+            position: fixed;
+            right: 0;
+            left: 0;
+            top: 0;
+            margin-top: -130px;
+            background: #fff !important;
+            -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .indexNavbar.scrolled .nav-item.active>a {
+            color: #ff5f5f !important;
+        }
+
+        @media (max-width: 991.98px) {
+            .indexNavbar.scrolled .navbar-nav {
+                background: none;
+                border-radius: 0px;
+                padding-left: 0rem !important;
+                padding-right: 0rem !important;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .indexNavbar.scrolled .navbar-nav {
+                background: none;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+
+        .indexNavbar.scrolled .navbar-toggler {
+            border: none;
+            color: rgba(0, 0, 0, 0.5) !important;
+            border-color: rgba(0, 0, 0, 0.5) !important;
+            cursor: pointer;
+            padding-right: 0;
+            text-transform: uppercase;
+            font-size: 16px;
+            letter-spacing: .1em;
+        }
+
+        .indexNavbar.scrolled .nav-link {
+            padding-top: 0.9rem !important;
+            padding-bottom: 0.9rem !important;
+            color: #000!important;
+        }
+
+        .indexNavbar.scrolled .nav-link.active {
+            color: #ff5f5f !important;
+        }
+
+        .indexNavbar.scrolled.awake {
+            margin-top: 0px;
+            -webkit-transition: .3s all ease-out;
+            -o-transition: .3s all ease-out;
+            transition: .3s all ease-out;
+        }
+
+        .indexNavbar.scrolled.sleep {
+            -webkit-transition: .3s all ease-out;
+            -o-transition: .3s all ease-out;
+            transition: .3s all ease-out;
+        }
+
+        .indexNavbar.scrolled .navbar-brand {
+            color: #000;
+        }
+
+        @media only screen and (max-width: 360px) {}
+
+        @media only screen and (max-width: 328px) {}
+
+        @media only screen and (min-width: 992px) {}
+
+        @media only screen and (min-width: 1085px) {}
+
+        @media screen and (max-width: 735px) {}
+    </style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/jquery.timepicker.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="js/google-map.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
 
