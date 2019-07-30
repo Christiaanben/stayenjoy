@@ -16,7 +16,7 @@ for($i = 0; $i < count($files); $i++){
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>hi.guru Bots</title>
+	<title>Stay Enjoy</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
