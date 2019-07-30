@@ -164,7 +164,7 @@ if (isset($_POST["contact"])) {
 
 <!--HOME-->
 <section class="home-slider owl-carousel" id="home" style="overflow-x: scroll; z-index: -1;">
-	<div class="slider-item" style="background-image: url('images/9.jpg');">
+	<div class="slider-item" style="background-image: url('images/<?= $page ?>/cover.jpg');">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row slider-text align-items-center">
@@ -194,7 +194,8 @@ if (isset($_POST["contact"])) {
 						<form method="post" class="d-block d-lg-flex">
 							<div class="container" style="cursor: pointer; padding-left: 60px; padding-right: 60px;">
 								<p id="result"></p>
-								<div id="myMessageSent" class="overlayMessageSent">
+<!--								TODO: add php to display this after email sent-->
+								<div id="myMessageSent" class="overlayMessageSent" style="display: none;">
 									<h1 style="color: white; padding-top: 275px; z-index: 100;">Message sent! Thank
 										you.</h1>
 								</div>
@@ -281,7 +282,7 @@ if (isset($_POST["contact"])) {
 						</div>
 					</div>
 					<div class="media-body p-2">
-						<h3 class="heading">171 Bikini Beach</h3>
+						<h3 class="heading"><?= $address ?></h3>
 						<?= $about ?>
 					</div>
 				</div>

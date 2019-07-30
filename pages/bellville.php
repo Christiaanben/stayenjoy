@@ -8,14 +8,9 @@ $about = <<< 'EOD'
 <p>Breakfast for self catering on request.</p>
 <p>No smoking or animals.</p>
 EOD;
-$rooms = array(	"Master Bedroom"=>["ms", "images/MS1.jpg", "images/MS2.jpg", "images/MS3.jpg"],
-	"Middle Bedroom"=>["mb", "images/MB1.jpg"],
-	"Guest Bedroom"=>["gb", "images/GB1.jpg", "images/GB2.jpg", "images/GB3.jpg"],
-	"Outside Bedroom"=>["ob", "images/OB1.jpg", "images/OB2.jpg", "images/OB3.jpg", "images/OB4.jpg"],
-	"Lounge"=>["lr", "images/LR1.jpg", "images/LR2.jpg", "images/LR3.jpg", "images/LR4.jpg"],
-	"Dining Area"=>["dr", "images/DR1.jpg", "images/DR2.jpg", "images/DR3.jpg"],
-	"Porch"=>["s", "images/S1.jpg", "images/S2.jpg", "images/S3.jpg"],
-	"Braai Area"=>["b", "images/B1.jpg", "images/B2.jpg", "images/B3.jpg"]);
+$rooms = array(	"Entrance"=>["e", "images/bellville/entrance.jpg"],
+	"Communal Area"=>["ca", "images/bellville/ca1.jpg", "images/bellville/ca3.jpg"],
+	"Braai Area"=>["ba", "images/bellville/ba1.jpg", "images/bellville/ba2.jpg"]);
 $details = <<< 'EOD'
 <li>Bedrooms: 1</li>
 <li>Guests: 2</li>
