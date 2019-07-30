@@ -74,7 +74,7 @@ for($i = 0; $i < count($files); $i++){
 </nav>
 
 
-<div class="container" style="display: none">
+<div class="container" style="">
 	<div class="row logoItemMargin">
 
 		<?php
